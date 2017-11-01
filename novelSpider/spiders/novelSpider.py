@@ -19,8 +19,10 @@ class NovelSpider(scrapy.Spider):
     def parse(self, response):
         output = open('1.txt', 'a+')
         soup = BeautifulSoup(response.body)
+        title = (soup.title.get_text()).split("_")[1]
+        output.write(title+"\n")
         content = soup.find("div", class_="panel-body content-body content-ext").get_text()
-        output.write(content)
+        output.write(content+"\n")
         next_page = soup.find("li",class_="next").a.get("href")
         if next_page is not None:
             next_page = response.urljoin(next_page)
